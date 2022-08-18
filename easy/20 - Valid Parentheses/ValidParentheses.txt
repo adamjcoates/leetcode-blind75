@@ -1,0 +1,77 @@
+https://leetcode.com/problems/valid-parentheses/
+
+Problem:
+  Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+  An input string is valid if:
+
+  Open brackets must be closed by the same type of brackets.
+  Open brackets must be closed in the correct order.
+ 
+Examples:
+  Example 1:
+  Input: s = "()"
+  Output: true
+
+  Example 2:
+  Input: s = "()[]{}"
+  Output: true
+
+  Example 3:
+  Input: s = "(]"
+  Output: false
+
+Constraints:
+  1 <= s.length <= 104
+  s consists of parentheses only '()[]{}'.
+
+Pattern(s): Stack
+
+Parameter(s): String s
+
+Algorithm:
+  Initialize Stack<Character> to store opening brackets
+
+  Loop through input String chars one by one
+
+    If char is an opening bracket, push to stack
+
+    Otherwise if stack is empty or stack.pop() is not matching with char, return false
+
+  Return stack.isEmpty()
+
+  (Create isOpeningBracket(char) and isMatching(char, char) methods)
+
+Code:
+  class Solution {
+      private static final String OPEN_BRACKETS = "([{";
+      private static final String CLOSE_BRACKETS = ")]}";
+
+      public boolean isValid(String s) {
+          Stack<Character> stack = new Stack<>();
+          
+          for (int i = 0; i < s.length(); i++) {
+              char c = s.charAt(i);
+              
+              if (isOpeningBracket(c)) {
+                  stack.push(c);
+              } else {
+                  if (stack.isEmpty() || !isMatching(stack.pop(), c)) return false;
+              }
+          }
+          
+          return stack.isEmpty();
+      }
+      
+      private boolean isOpeningBracket(char c) {
+          return OPEN_BRACKETS.indexOf(c) != -1;
+      }
+      
+      private boolean isMatching(char open, char close) {
+          return OPEN_BRACKETS.indexOf(open) == CLOSE_BRACKETS.indexOf(close);
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(n) - Stack
