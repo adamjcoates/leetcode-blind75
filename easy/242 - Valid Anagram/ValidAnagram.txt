@@ -1,0 +1,61 @@
+https://leetcode.com/problems/valid-anagram/
+
+Problem:
+  Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+
+  An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Exampls:
+  Example 1:
+  Input: s = "anagram", t = "nagaram"
+  Output: true
+  Example 2:
+  Input: s = "rat", t = "car"
+  Output: false
+
+Constraints:
+  1 <= s.length, t.length <= 5 * 104
+  s and t consist of lowercase English letters.
+
+Pattern(s): String, Map
+
+Parameter(s): String s, String t
+
+Algorithm:
+  Guard clause to check if String lengths are the same (algo relies on the same size Strings)
+
+  Create a character array that will represent a map with a size of 26 letters of the alphabet
+
+  Loop through strings (does not matter which length is used)
+    Check character at ith index of s, increment frequency of that letter in map
+    Check character at ith index of t, decrement frequency of that letter in map
+    (take character at ith index - 'a' to get index in the map)
+
+  Loop through map
+    If any frequency is not 0, return false
+
+  Return true
+
+Code:
+  class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) return false;
+        
+        char[] charMap = new char[26];
+        
+        for (int i = 0; i < s.length(); i++) {
+            charMap[s.charAt(i) - 'a']++;
+            charMap[t.charAt(i) - 'a']--;
+        }
+        
+        for (int frequency : charMap) {
+            if (frequency != 0) return false;
+        }
+        
+        return true;
+    }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(n) - charMap frequencies grow with the size of the input string
