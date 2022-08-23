@@ -25,54 +25,79 @@ Pattern(s): Binary Tree, DFS
 Parameter(s): TreeNode root
 
 Algorithm:
+  Guard clause to check if the root node is null, return true
+
+  Do a dfs that returns the height of the tree if the root node is balanced
+  Return true if the root is balanced (A value of -1 will mean the tree is not balanced)
+
+  DFS helper method returns an int taking a TreeNode as a parameter
+    Base case:
+      If the left child and right child are null, return a height of 1
+
+    Recursive case:
+      Initialize left height variable
+      If left is not null, set left height to dfs(root.left)
+      If the left height is unbalanced, return -1
+
+      Initialize a right height variable
+      If right is not null, set right height to dfs(root.right)
+      If the right height is unbalanced, return -1
+
+      If the difference between the right and left height is less than or equal to 1, then it is balanced so we can return the height
+      (Return the larger value between left and right plus 1)
+      (We add 1 to add the height of the root node to the left or right subtree)
+
+      If we get here, return -1, it is unbalanced
+
+
 
 Code:
   /**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    final int UNBALANCED = -1;
-    final int LEAF_HEIGHT = 1;
-    
-    public boolean isBalanced(TreeNode root) {
-        if (root == null) return true;
-        
-        return dfs(root) != UNBALANCED;
-    }
-    
-    private int dfs(TreeNode root) {
-        if (root.left == null && root.right == null) return LEAF_HEIGHT;
-        
-        int leftHeight = 0;
-        if (root.left != null) {
-            leftHeight = dfs(root.left);
-        }
-        if (leftHeight == UNBALANCED) return UNBALANCED;
-        
-        int rightHeight = 0;
-        if (root.right != null) {
-            rightHeight = dfs(root.right);
-        }
-        if (rightHeight == UNBALANCED) return UNBALANCED;
-        
-        if (Math.abs(leftHeight - rightHeight) <= 1) return Math.max(leftHeight, rightHeight) + 1;
-        
-        return UNBALANCED;
-    }
-}
+  * Definition for a binary tree node.
+  * public class TreeNode {
+  *     int val;
+  *     TreeNode left;
+  *     TreeNode right;
+  *     TreeNode() {}
+  *     TreeNode(int val) { this.val = val; }
+  *     TreeNode(int val, TreeNode left, TreeNode right) {
+  *         this.val = val;
+  *         this.left = left;
+  *         this.right = right;
+  *     }
+  * }
+  */
+  class Solution {
+      final int UNBALANCED = -1;
+      final int LEAF_HEIGHT = 1;
+      
+      public boolean isBalanced(TreeNode root) {
+          if (root == null) return true;
+          
+          return dfs(root) != UNBALANCED;
+      }
+      
+      private int dfs(TreeNode root) {
+          if (root.left == null && root.right == null) return LEAF_HEIGHT;
+          
+          int leftHeight = 0;
+          if (root.left != null) {
+              leftHeight = dfs(root.left);
+          }
+          if (leftHeight == UNBALANCED) return UNBALANCED;
+          
+          int rightHeight = 0;
+          if (root.right != null) {
+              rightHeight = dfs(root.right);
+          }
+          if (rightHeight == UNBALANCED) return UNBALANCED;
+          
+          if (Math.abs(leftHeight - rightHeight) <= 1) return Math.max(leftHeight, rightHeight) + 1;
+          
+          return UNBALANCED;
+      }
+  }
 
 Complexity Analysis:
   Time: O(n) - visit every node of the tree
-  Space: O(h) - where h is the height of the tree
+  Space: O(n) - call stack grows relative to the size of the input
