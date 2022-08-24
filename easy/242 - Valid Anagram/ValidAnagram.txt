@@ -24,12 +24,12 @@ Parameter(s): String s, String t
 Algorithm:
   Guard clause to check if String lengths are the same (algo relies on the same size Strings)
 
-  Create a character array that will represent a map with a size of 26 letters of the alphabet
+  Create an int array that will represent a map with a size of 26 letters of the alphabet
 
   Loop through strings (does not matter which length is used)
     Check character at ith index of s, increment frequency of that letter in map
     Check character at ith index of t, decrement frequency of that letter in map
-    (take character at ith index - 'a' to get index in the map)
+    (Take character at ith index - 'a' to get index in the map)
 
   Loop through map
     If any frequency is not 0, return false
@@ -41,14 +41,14 @@ Code:
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) return false;
         
-        char[] charMap = new char[26];
+        int[] freqMap = new int[26];
         
         for (int i = 0; i < s.length(); i++) {
-            charMap[s.charAt(i) - 'a']++;
-            charMap[t.charAt(i) - 'a']--;
+            freqMap[s.charAt(i) - 'a']++;
+            freqMap[t.charAt(i) - 'a']--;
         }
         
-        for (int frequency : charMap) {
+        for (int frequency : freqMap) {
             if (frequency != 0) return false;
         }
         
@@ -58,4 +58,4 @@ Code:
 
 Complexity Analysis:
   Time: O(n)
-  Space: O(n) - charMap frequencies grow with the size of the input string
+  Space: O(26) - freqMap is a fixed array of 26 integers

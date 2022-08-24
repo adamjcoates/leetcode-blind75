@@ -1,0 +1,62 @@
+https://leetcode.com/problems/ransom-note/
+
+Problem:
+Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+
+Each letter in magazine can only be used once in ransomNote.
+
+Examples:
+  Example 1:
+  Input: ransomNote = "a", magazine = "b"
+  Output: false
+
+  Example 2:
+  Input: ransomNote = "aa", magazine = "ab"
+  Output: false
+
+  Example 3:
+  Input: ransomNote = "aa", magazine = "aab"
+  Output: true
+ 
+Constraints:
+  1 <= ransomNote.length, magazine.length <= 105
+  ransomNote and magazine consist of lowercase English letters.
+
+Pattern(s): String, Map
+
+Parameter(s): String ransomNote, String magazine
+
+Algorithm:
+  Create an int array that will represent a map with a size of 26 letters of the alphabet
+
+  Loop through every char in the magazine String
+    Increment frequency of that letter in our map
+    (Take character at ith index - 'a' to get index in the map)
+
+  Loop through every char in the ransomNote String
+    Decrement frequency of that letter in our map
+    (Take character at ith index - 'a' to get index in the map)
+    If the frequency is less than 0, return false
+
+  If we get here, return true
+
+Code:
+  class Solution {
+      public boolean canConstruct(String ransomNote, String magazine) {        
+          int[] freqMap = new int[26];
+          
+          for (char c : magazine.toCharArray()) {
+              freqMap[c - 'a']++;
+          }
+          
+          for (char c : ransomNote.toCharArray()) {
+              if (--freqMap[c - 'a'] < 0) return false;
+          }
+          
+          return true;
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n + m) - n and m are lengths of the two strings
+  Space: O(26) - freqMap is a fixed array of 26 integers
