@@ -1,0 +1,98 @@
+https://leetcode.com/problems/reverse-linked-list/
+
+Problem:
+  Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+Examples:
+  Example 1:
+  Input: head = [1,2,3,4,5]
+  Output: [5,4,3,2,1]
+
+  Example 2:
+  Input: head = [1,2]
+  Output: [2,1]
+
+  Example 3:
+  Input: head = []
+  Output: []
+ 
+Constraints:
+  The number of nodes in the list is the range [0, 5000].
+  -5000 <= Node.val <= 5000
+
+Pattern(s): Linked List, Two Pointer
+
+Parameter(s): ListNode head
+
+Algorithm:
+  Iterative:
+  Initialize prev pointer to null and current to head
+
+  Loop while current is not null
+    Set temp to current.next to "save" pointer
+
+    Set current.next to previous
+
+    Set previous to current to increment it to the next node
+    Set current to temp to increment it to the next node
+
+  Return previous which is the new head of the Linked List
+
+  Recursive:
+  Base Case:
+    If head or head.next is null, return head
+  
+  Recursive Case:
+    Set a new head pointer to reverseList(head.next)
+
+    Set head.next.next to the head (set a pointer from the head of the reversed list into this current head)
+    Set head.next to null (remove that pointer)
+
+    Return the new head pointer from reverseList(head.next)
+
+Code:
+  Iterative:
+  /**
+  * Definition for singly-linked list.
+  * public class ListNode {
+  *     int val;
+  *     ListNode next;
+  *     ListNode() {}
+  *     ListNode(int val) { this.val = val; }
+  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+  * }
+  */
+  class Solution {
+      public ListNode reverseList(ListNode head) {
+          ListNode previous = null, current = head;
+          
+          while (current != null) {
+              ListNode temp = current.next;
+              
+              current.next = previous;
+              previous = current;
+              current = temp;
+          }
+          
+          return previous;
+      }
+  }
+
+  Recursive:
+  class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) return head;
+        
+        ListNode newHead = reverseList(head.next);
+        
+        head.next.next = head;
+        head.next = null;
+
+        return newHead;
+    }
+  }
+Complexity Analysis:
+  Time: O(n)
+  Space:
+    Iterative: O(1)
+    Recursive: O(n)

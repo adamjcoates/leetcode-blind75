@@ -74,5 +74,5 @@ Code:
   }
 
 Complexity Analysis:
-  Time:
-  Space:
+  Time: O(logn) - At each stage of search, split the input array in half
+  Space: O(1)

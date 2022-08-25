@@ -26,7 +26,7 @@ Constraints:
   1 <= s.length <= 2 * 105
   s consists only of printable ASCII characters.
 
-Pattern(s): Array, Two Pointer
+Pattern(s): String, Two Pointer
 
 Parameter(s): String s
 

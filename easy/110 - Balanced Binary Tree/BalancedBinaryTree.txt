@@ -49,8 +49,6 @@ Algorithm:
 
       If we get here, return -1, it is unbalanced
 
-
-
 Code:
   /**
   * Definition for a binary tree node.
