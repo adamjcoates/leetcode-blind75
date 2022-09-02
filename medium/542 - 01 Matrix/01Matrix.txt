@@ -1,0 +1,84 @@
+https://leetcode.com/problems/01-matrix/
+
+Problem:
+Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
+
+The distance between two adjacent cells is 1.
+
+Examples:
+  Example 1:
+  Input: mat = [[0,0,0],[0,1,0],[0,0,0]]
+  Output: [[0,0,0],[0,1,0],[0,0,0]]
+
+  Example 2:
+  Input: mat = [[0,0,0],[0,1,0],[1,1,1]]
+  Output: [[0,0,0],[0,1,0],[1,2,1]]
+ 
+
+Constraints:
+  m == mat.length
+  n == mat[i].length
+  1 <= m, n <= 104
+  1 <= m * n <= 104
+  mat[i][j] is either 0 or 1.
+  There is at least one 0 in mat.
+
+Pattern(s): Graph, BFS
+
+Parameter(s): int[][] mat
+
+Algorithm:
+  For our BFS routine, we keep a queue, q to maintain the queue of cells to be examined next.
+  We start by adding all the cells with 0s to q.
+  Intially, distance for each 0 cell is 0 and distance for each 1 is INT_MAX, which is updated during the BFS.
+  Pop the cell from queue, and examine its neighbors. 
+    If the new calculated distance for neighbor {i,j} is smaller, we add {i,j} to q and update dist[i][j].
+
+Code:
+  class Solution {
+      public int[][] updateMatrix(int[][] mat) {
+          int rows = mat.length;
+          int columns = mat[0].length;
+          
+          Queue<int[]> q = new LinkedList<>();
+          
+          //Add all 0s to queue
+          for (int i = 0; i < rows; i++) {
+              for (int j = 0; j < columns; j++) {
+                  if (mat[i][j] == 0) {
+                      q.offer(new int[] {i, j});
+                  } else {
+                      mat[i][j] = Integer.MAX_VALUE;
+                  }
+              }
+          }
+          
+          int[][] direction = {{-1, 0}, 
+                              {1, 0}, 
+                              {0, -1}, 
+                              {0, 1}};
+          
+          //Perform BFS starting from 0s in queue
+          while (!q.isEmpty()) {
+              int[] current = q.poll();
+              
+              //Look at each neighbor
+              for (int[] dir : direction) {
+                  int newRow = current[0] + dir[0];
+                  int newColumn = current[1] + dir[1];
+                  
+                  //If rows and columns are out of bounds or new calculated distance for neighbor is smaller, update mat
+                  if (newRow >= rows || newColumn >= columns || newRow < 0 || newColumn < 0 || 
+                      mat[newRow][newColumn] <= mat[current[0]][current[1]] + 1) continue;
+                      
+                  q.offer(new int[] {newRow, newColumn});
+                  mat[newRow][newColumn] = mat[current[0]][current[1]] + 1;
+              }
+          }
+          
+          return mat;
+      }
+  }
+Complexity Analysis:
+  Time: O(r * c)
+  Space: O(r * c) - Queue space

@@ -1,0 +1,81 @@
+https://leetcode.com/problems/binary-tree-level-order-traversal/
+
+Problem:
+  Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+
+Examples:
+  Example 1:
+  Input: root = [3,9,20,null,null,15,7]
+  Output: [[3],[9,20],[15,7]]
+
+  Example 2:
+  Input: root = [1]
+  Output: [[1]]
+
+  Example 3:
+  Input: root = []
+  Output: []
+ 
+Constraints:
+  The number of nodes in the tree is in the range [0, 2000].
+  -1000 <= Node.val <= 1000
+
+Pattern(s): Binary Tree, BFS
+
+Parameter(s): TreeNode root
+
+Algorithm:
+  Initialize 2D ArrayList of integers
+  Guard clause if the root is null, return empty ArrayList
+
+  Initialize a queue of TreeNodes
+  Offer the root node to the queue initially
+
+  Loop while the queue is not empty
+    Initialize an ArrayList of integers for our current level
+    
+    Loop through each node in the queue of this level
+      Poll our current node from the queue
+      Add the node's value to the current level ArrayList
+
+      If the left node is not null, offer it to the queue
+      If the right node is not null, offer it to the queue
+
+    Add the current level ArrayList to our 2D ArrayList
+
+  Return our 2D ArrayList
+
+Code:
+  class Solution {
+      public List<List<Integer>> levelOrder(TreeNode root) {
+          List<List<Integer>> result = new ArrayList<>();
+          if (root == null) return result;
+          
+          Queue<TreeNode> q = new LinkedList<>();
+          q.offer(root);
+          
+          while(!q.isEmpty()) {
+              List<Integer> currentLevel = new ArrayList<>();
+              
+              for (int i = q.size(); i > 0; i--) {
+                  TreeNode node = q.poll();
+                  currentLevel.add(node.val);
+                  
+                  if (node.left != null) {
+                      q.offer(node.left);
+                  }
+                  if (node.right != null) {
+                      q.offer(node.right);
+                  }
+              }
+              
+              result.add(currentLevel);
+          }
+          
+          return result;
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n) - n is height of the tree
+  Space: O(n) 

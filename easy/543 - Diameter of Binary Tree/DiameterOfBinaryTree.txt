@@ -1,0 +1,70 @@
+https://leetcode.com/problems/diameter-of-binary-tree/
+
+Problem:
+  Given the root of a binary tree, return the length of the diameter of the tree.
+
+  The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+  The length of a path between two nodes is represented by the number of edges between them.
+
+Examples:
+  Example 1:
+  Input: root = [1,2,3,4,5]
+  Output: 3
+  Explanation: 3 is the length of the path [4,2,1,3] or [5,2,1,3].
+
+  Example 2:
+  Input: root = [1,2]
+  Output: 1
+ 
+Constraints:
+  The number of nodes in the tree is in the range [1, 104].
+  -100 <= Node.val <= 100
+
+Pattern(s): Binary Tree, DFS
+
+Parameter(s): TreeNode root
+
+Algorithm:
+  Initialize a global diameter variable at 0
+
+  Perform dfs(root)
+  Return the diameter
+
+  private helper dfs method that returns an int
+    Base case:
+    If root is null, return 0
+
+    Recursive case:
+    Set a left height variable to dfs(root.left)
+    Set a right height variable to dfs(root.right)
+
+    Update diameter to equal the maximum value between (left height + right height) and diameter
+
+    Return 1 + the maximum value between left and right
+
+Code:
+  class Solution {
+      int diameter = 0;
+      
+      public int diameterOfBinaryTree(TreeNode root) {
+          dfs(root);
+          
+          return diameter;
+      }
+      
+      private int dfs(TreeNode root) {
+          if (root == null) return 0;
+          
+          int left = dfs(root.left);
+          int right = dfs(root.right);
+          
+          diameter = Math.max(left + right, diameter);
+          
+          return 1 + Math.max(left, right);
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(n)

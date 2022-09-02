@@ -1,0 +1,78 @@
+https://leetcode.com/problems/add-binary/
+
+Problem:
+Given two binary strings a and b, return their sum as a binary string.
+
+Examples:
+  Example 1:
+  Input: a = "11", b = "1"
+  Output: "100"
+  Example 2:
+  Input: a = "1010", b = "1011"
+  Output: "10101"
+ 
+Constraints:
+  1 <= a.length, b.length <= 104
+  a and b consist only of '0' or '1' characters.
+  Each string does not contain leading zeros except for the zero itself.
+
+Pattern(s): String, Binary
+
+Parameter(s): String a, String b
+
+Algorithm:
+  Create a new StringBuilder object that will hold our result
+  Initialize an overflow var to 0
+  Initialize an A pointer and B pointer that starts at the last index of each String
+
+  Loop while the A pointer or B pointer is greater than or equal to 0
+    Set our current sum to the current overflow aValue
+    If our A pointer is within bounds of the String, add it's digit to the sum and decrement A pointer
+    If our B pointer is within bounds of the String, add it's digit to the sum and decrement B pointer
+
+    Insert our sum % 2 to the end of our StringBuilder
+    Set our new overflow value to sum / 2
+
+  If there's an overflow value remaining, insert it to the end of the StringBuilder
+  Return the String value of our StringBuilder
+
+Code:
+  class Solution {
+      public String addBinary(String a, String b) {
+          StringBuilder result = new StringBuilder();
+          int overflow = 0; //boolean overflow = false;
+          int aValue = a.length() - 1, bValue = b.length() - 1;
+          
+          while (aValue >= 0 || bValue >= 0) {
+              int sum = overflow; //boolean sumWithOverflow = false;
+              if (aValue >= 0) sum += a.charAt(aValue--) - '0';
+              //boolean aBit = (aValue >= 0) ? (a.charAt(aValue--) - '0' > 0) : false;
+              if (bValue >= 0) sum += b.charAt(bValue--) - '0';
+              //boolean bBit = (bValue >= 0) ? (b.charAt(aValue--) - '0' > 0) : false;
+
+              //boolean sum = aBit ^ bBit;
+              //sumWithOverflow = sum ^ overflow;
+              //overflow = (aBit & bBit) | (sum & carry);
+
+              result.insert(0, sum % 2);
+              overflow = sum / 2;
+              /*
+              if (sumWithOverflow)
+                result.insert(0, 1);
+              else
+                result.insert(0, 0);
+              */
+          }
+          
+          if (overflow != 0) {
+              result.insert(0, overflow);
+          }
+          //if (overflow) result.insert(0, 1);
+          
+          return result.toString();
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(n)

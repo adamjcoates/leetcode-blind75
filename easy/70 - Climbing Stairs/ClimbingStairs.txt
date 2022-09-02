@@ -1,0 +1,75 @@
+https://leetcode.com/problems/climbing-stairs/
+
+Problem:
+  You are climbing a staircase. It takes n steps to reach the top.
+
+  Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Examples:
+  Example 1:
+  Input: n = 2
+  Output: 2
+  Explanation: There are two ways to climb to the top.
+  1. 1 step + 1 step
+  2. 2 steps
+
+  Example 2:
+  Input: n = 3
+  Output: 3
+  Explanation: There are three ways to climb to the top.
+  1. 1 step + 1 step + 1 step
+  2. 1 step + 2 steps
+  3. 2 steps + 1 step
+ 
+
+Constraints:
+  1 <= n <= 45
+
+Pattern(s): Dynamic Programming, Two Pointer
+
+Parameter(s): int n
+
+Algorithm:
+  Problem is essentially a binary decision tree where at each step we decide to go up stairs one or two times
+        0
+      /   \
+    1       2
+  /   \   /  \
+  2   3   3   4
+  If we do this recursively, our base case is either when we get to n steps or when we are greater than n steps
+  We count how many times we land on n steps and return that answer. However, this is a O(2^n) since each decision branches into two options
+  If we use memoization (caching) to store our subproblems we have already found, we can reduce this time complexity further.
+  If n = 5, our example cache starting from bottom up would be [ x, x, x, 1, 1]. We can start to recognize a pattern that there are only 1 successful
+  paths at n and n-1
+  This caching, however, uses O(n) extra space but now we can see that the pattern is simply the Fibbonaci sequence. For example, n-2 adds up
+  the successful paths at n-1 and n.
+  We can use two pointers, one and two, initialize them both at 1.
+
+  [ , , , 1, 1]   <---- one, two represent the last two indices
+
+  Then we loop n - 1 times
+    Set a temp var to one
+    Replace one with the result of one + two (shift its value to the left)
+    Set two to temp (shift its value to what one was previously)
+
+  Return one
+
+Code:
+  class Solution {
+      public int climbStairs(int n) {
+          int one = 1, two = 1;
+          
+          for (int i = 0; i < n - 1; i++) {
+              
+              int temp = one;
+              one = one + two;
+              two = temp;
+          }
+          
+          return one;
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(1)
