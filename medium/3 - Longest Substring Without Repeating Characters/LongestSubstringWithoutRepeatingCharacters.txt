@@ -1,0 +1,74 @@
+https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+Problem:
+  Given a string s, find the length of the longest substring without repeating characters.
+
+Examples:
+  Example 1:
+  Input: s = "abcabcbb"
+  Output: 3
+  Explanation: The answer is "abc", with the length of 3.
+
+  Example 2:
+  Input: s = "bbbbb"
+  Output: 1
+  Explanation: The answer is "b", with the length of 1.
+
+  Example 3:
+  Input: s = "pwwkew"
+  Output: 3
+  Explanation: The answer is "wke", with the length of 3.
+  Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+ 
+Constraints:
+  0 <= s.length <= 5 * 104
+  s consists of English letters, digits, symbols and spaces.
+
+Pattern(s): String, Two Pointer, Map
+
+Parameter(s): String s
+
+Algorithm:
+  Initialize a frequency map with a size of 128 of ASCII characters
+  Initialize a left and right pointer to 0
+  Initialize a longest substring length variable to 0
+
+  Loop while our right pointer is within bounds of the String
+    If the character at our right pointer has a frequency greater than 0
+      We have found a repeating character so we need to decrement our sliding window
+      Decrement the frequency of the character at our left pointer
+      Move the left pointer to the right
+
+    Otherwise, we do not have a repeating character
+      Increment the frequency of the character found at our right pointer
+      Move the right pointer right
+      Check if we have a new longest substring length and update variable
+
+  Return our longest substring length variable
+
+Code:
+  class Solution {
+      public int lengthOfLongestSubstring(String s) 
+      {
+          int[] freqMap = new int[128];
+          int left = 0, right = 0;
+          int longestSubstring = 0;
+          
+          while (right < s.length()) {
+              if (freqMap[s.charAt(right)] > 0) {
+                  freqMap[s.charAt(left)]--; //Decrement frequency from map
+                  left++;
+              } else {
+                  freqMap[s.charAt(right)]++; //Increment frequency from map
+                  right++;
+                  longestSubstring = Math.max(longestSubstring, right - left);
+              }
+          }
+          
+          return longestSubstring;
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(1) - alphabet size is fixed
