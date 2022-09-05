@@ -1,0 +1,114 @@
+https://leetcode.com/problems/evaluate-reverse-polish-notation/
+
+Problem:
+  Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+  Valid operators are +, -, *, and /. Each operand may be an integer or another expression.
+
+  Note that division between two integers should truncate toward zero.
+
+  It is guaranteed that the given RPN expression is always valid. 
+  That means the expression would always evaluate to a result, and there will not be any division by zero operation.
+
+Examples:
+  Example 1:
+  Input: tokens = ["2","1","+","3","*"]
+  Output: 9
+  Explanation: ((2 + 1) * 3) = 9
+
+  Example 2:
+  Input: tokens = ["4","13","5","/","+"]
+  Output: 6
+  Explanation: (4 + (13 / 5)) = 6
+
+  Example 3:
+  Input: tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+  Output: 22
+  Explanation: ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+  = ((10 * (6 / (12 * -11))) + 17) + 5
+  = ((10 * (6 / -132)) + 17) + 5
+  = ((10 * 0) + 17) + 5
+  = (0 + 17) + 5
+  = 17 + 5
+  = 22
+ 
+
+Constraints:
+  1 <= tokens.length <= 104
+  tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
+
+Pattern(s): Stack
+
+Parameter(s): String[] tokens
+
+Algorithm:
+  Guard clause if the token Array is null or the length is 0, return -1
+
+  Initialize an int Stack to store all our operands for our expressions
+  Initialize two variables for the two operands
+
+  Loop through the list of tokens
+    Switch statement that uses each token
+      Addition case:
+        Pop the two operands from the Stack
+        Push the sum of the two operands to the Stack
+      Subtraction case:
+        Pop the two operands from the Stack
+        Push the difference of the two operands to the Stack
+      Multiplication case:
+        Pop the two operands from the Stack
+        Push the product of the two operands to the Stack
+      Division case:
+        Pop the two operands from the Stack
+        Push the quotient of the two operands to the Stack
+      Default case (token is comprised of digits):
+        Might wanna use "[0-9]+" regex to make sure the token is an integer
+        Push the parsed integer from the token to the Stack
+
+  The only integer on the Stack should be our result
+  Return the popped value
+
+Code:
+  class Solution {
+      public int evalRPN(String[] tokens) {
+          if (tokens == null || tokens.length == 0) return -1;
+          
+          Stack<Integer> operands = new Stack<>();
+          
+          int operand1, operand2;
+          
+          for (String token : tokens) {
+              switch(token) {
+                  case "+":
+                      operand2 = operands.pop();
+                      operand1 = operands.pop();
+                      operands.push(operand1 + operand2);
+                      break;
+                  case "-":
+                      operand2 = operands.pop();
+                      operand1 = operands.pop();
+                      operands.push(operand1 - operand2);
+                      break;
+                  case "*":
+                      operand2 = operands.pop();
+                      operand1 = operands.pop();
+                      operands.push(operand1 * operand2);
+                      break;
+                  case "/":
+                      operand2 = operands.pop();
+                      operand1 = operands.pop();
+                      operands.push(operand1 / operand2);
+                      break;
+                  default:
+                      operands.push(Integer.parseInt(token));
+                      break;
+              }
+          }
+          
+          return operands.pop();
+      }
+  }
+
+Complexity Analysis:
+  Time: O(n)
+  Space: O(n)
