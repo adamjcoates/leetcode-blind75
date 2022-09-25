@@ -1,0 +1,79 @@
+https://leetcode.com/problems/coin-change/
+
+Problem:
+  You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+  Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+  You may assume that you have an infinite number of each kind of coin.
+
+Examples:
+  Example 1:
+  Input: coins = [1,2,5], amount = 11
+  Output: 3
+  Explanation: 11 = 5 + 5 + 1
+
+  Example 2:
+  Input: coins = [2], amount = 3
+  Output: -1
+
+  Example 3:
+  Input: coins = [1], amount = 0
+  Output: 0
+ 
+
+Constraints:
+  1 <= coins.length <= 12
+  1 <= coins[i] <= 231 - 1
+  0 <= amount <= 104
+
+Pattern(s): Dynamic Programming
+
+Parameter(s): int[] coins, int amount
+
+Algorithm:
+  Bottom Up:
+  Initialize a cache of size total amount + 1
+  Initialize cache[0] to be 0 <-- base case
+  Initialize each other value of cache to total amount + 1 <-- essentially Integer.MAX_VALUE
+
+  Loop starting from 1 to total amount + 1
+    Look at every coin in our list
+      Take the current amount and subtract the coin's value from it
+      If it is greater than 0, then the coin we used can make up the amount
+        Set the new cache value at the current amount to the minimum value of 
+        1 + cache[amount - coin value] (the 1 + stands for the current coin being added to the total)
+
+  If cache[total amount] != to original value assigned (amount + 1)
+    Return cache[total amount]
+
+  Otherwise, return -1 (We did not find a combination that adds up to the total amount)
+
+
+Code:
+  class Solution {
+      public int coinChange(int[] coins, int amount) {
+          int[] cache = new int[amount + 1];
+          cache[0] = 0;
+          
+          for (int i = 1; i < cache.length; i++) {
+              cache[i] = amount + 1;
+          }
+          
+          for (int i = 1; i < amount + 1; i++) {
+              for (int coin : coins) {
+                  if (i - coin >= 0) {
+                      cache[i] = Math.min(cache[i], 1 + cache[i - coin]);
+                  }
+              }
+          }
+          
+          if (cache[amount] != amount + 1) return cache[amount];
+          
+          return -1;
+      }
+  }
+
+Complexity Analysis:
+  Time: O(amount * # of coins)
+  Space: O(amount) - Cache
