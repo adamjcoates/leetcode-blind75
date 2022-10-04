@@ -1,0 +1,63 @@
+https://leetcode.com/problems/group-anagrams/
+
+Problem:
+  Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+  An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Examples:
+  Example 1:
+  Input: strs = ["eat","tea","tan","ate","nat","bat"]
+  Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+  Example 2:
+  Input: strs = [""]
+  Output: [[""]]
+
+  Example 3:
+  Input: strs = ["a"]
+  Output: [["a"]]
+ 
+Constraints:
+  1 <= strs.length <= 104
+  0 <= strs[i].length <= 100
+  strs[i] consists of lowercase English letters.
+
+Pattern(s): String, Map
+
+Parameter(s): String[] strs
+
+Algorithm:
+  Iterate through each String
+    Create a new character frequency map for each String of size [26]
+
+    Iterate through each character of the String and add its occurrence to the frequency map
+
+    Serialize the char map into a String with the valueOf() method
+
+    Add an entry to a HashMap using the char map String as a key and the starting String as a valueOf
+
+  Return HashMap.values() as an ArrayList
+
+Code:
+  class Solution {
+      public List<List<String>> groupAnagrams(String[] strs) {
+          Map<String, List<String>> map = new HashMap<>();
+          
+          for (String str : strs) {
+              char[] freqMap = new char[26];
+              for (char c : str.toCharArray()) freqMap[c - 'a']++;
+              
+              String key = String.valueOf(freqMap);
+              
+              if (!map.containsKey(key)) map.put(key, new ArrayList<>());
+              map.get(key).add(str);
+          }
+          
+          return new ArrayList<>(map.values());
+      }
+  }
+
+Complexity Analysis:
+  Time: O(m*n) - O(sum of all chars in Strings)
+  Space: O(m*n)
